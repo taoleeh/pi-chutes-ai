@@ -4,7 +4,7 @@ A Pi extension that provides access to AI models via the CHUTES AI platform thro
 
 ## Features
 
-- Access models from Anthropic, OpenAI, Google, Meta, DeepSeek, Qwen, Mistral, and more
+- Access a wide range of open-source models: GLM, Kimi, Minimax, DeepSeek, Qwen, Mistral, and more
 - OpenAI-compatible API endpoint
 - Dynamic model discovery
 - Reasoning/thinking support for compatible models
@@ -25,19 +25,14 @@ A Pi extension that provides access to AI models via the CHUTES AI platform thro
    pi -e ./path/to/pi-chutes-ai
 
    # Or install as a package
-   pi install git:github.com/user/pi-chutes-ai
+   pi install git:github.com/taoleeh/pi-chutes-ai
    ```
 
 4. Use `/model` in Pi and search for models prefixed with "chutes-ai/"
 
 ## Featured Models
 
-- **Anthropic**: Claude 3.7 Sonnet, Claude 3.5 Sonnet, Claude 3 Opus
-- **OpenAI**: GPT-4o, GPT-4o-mini
-- **DeepSeek**: DeepSeek-V3, DeepSeek-R1
-- **Google**: Gemini 2.5 Pro, Gemini 2.5 Flash
-- **Meta**: Llama 4 Maverick, Llama 4 Scout, Llama 3.3 70B
-- **Qwen**: Qwen3 235B, Qwen3 Coder, QwQ-32B
+To view models: https://llm.chutes.ai/v1/models
 
 ## Configuration
 
