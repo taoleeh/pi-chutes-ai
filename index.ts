@@ -33,145 +33,7 @@ const CHUTES_API_KEY_ENV = "CHUTES_API_KEY";
 const PROVIDER_NAME = "chutes-ai";
 
 // =============================================================================
-// Reasoning models and their capabilities
-// =============================================================================
-
-// Models known to support reasoning/thinking
-const REASONING_MODELS = new Set([
-  "deepseek-ai/deepseek-r1",
-  "deepseek-ai/deepseek-r1-0528",
-  "deepseek-ai/deepseek-v3-0324",
-  "deepseek-ai/deepseek-v3-250324",
-  "qwen/qwq-32b",
-  "qwen/qwen3-235b-a22b",
-  "qwen/qwen3-coder-480b-a35b-instruct",
-]);
-
-// Models known to support image/vision input
-const VISION_MODELS = new Set([
-  "anthropic/claude-3-5-sonnet-20241022",
-  "anthropic/claude-3-7-sonnet-20250219",
-  "anthropic/claude-3-opus-20240229",
-  "openai/gpt-4o",
-  "openai/gpt-4o-mini",
-  "google/gemini-2-5-pro-preview-03-25",
-  "google/gemini-2-5-flash-preview",
-  "google/gemini-2-0-flash",
-  "google/gemini-2-0-flash-thinking-exp-01-21",
-  "meta/llama-3-2-90b-vision-instruct",
-  "meta/llama-3-2-11b-vision-instruct",
-]);
-
-// Embedding / non-chat models to skip
-const SKIP_MODELS = new Set([
-  // Add any embedding/reranking models here if discovered
-]);
-
-// Known context windows (tokens)
-const CONTEXT_WINDOWS: Record<string, number> = {
-  // Anthropic Claude
-  "anthropic/claude-3-7-sonnet-20250219": 200000,
-  "anthropic/claude-3-5-sonnet-20241022": 200000,
-  "anthropic/claude-3-5-sonnet-20240620": 200000,
-  "anthropic/claude-3-opus-20240229": 200000,
-  "anthropic/claude-3-sonnet-20240229": 200000,
-  "anthropic/claude-3-haiku-20240307": 200000,
-  // OpenAI
-  "openai/gpt-4o": 128000,
-  "openai/gpt-4o-mini": 128000,
-  "openai/gpt-4-turbo": 128000,
-  "openai/gpt-4": 8192,
-  "openai/gpt-3.5-turbo": 16385,
-  // Google Gemini
-  "google/gemini-2-5-pro-preview-03-25": 1048576,
-  "google/gemini-2-5-flash-preview": 1048576,
-  "google/gemini-2-0-flash": 1048576,
-  "google/gemini-2-0-flash-thinking-exp-01-21": 1048576,
-  "google/gemini-1-5-pro": 2097152,
-  "google/gemini-1-5-flash": 1048576,
-  // Meta Llama
-  "meta/llama-4-maverick": 262144,
-  "meta/llama-4-scout": 524288,
-  "meta/llama-3-3-70b-instruct": 128000,
-  "meta/llama-3-1-405b-instruct": 128000,
-  "meta/llama-3-1-70b-instruct": 128000,
-  "meta/llama-3-1-8b-instruct": 128000,
-  "meta/llama-3-2-90b-vision-instruct": 128000,
-  "meta/llama-3-2-11b-vision-instruct": 128000,
-  // DeepSeek
-  "deepseek-ai/deepseek-v3": 64000,
-  "deepseek-ai/deepseek-v3-0324": 64000,
-  "deepseek-ai/deepseek-v3-250324": 64000,
-  "deepseek-ai/deepseek-r1": 64000,
-  "deepseek-ai/deepseek-r1-0528": 64000,
-  "deepseek-ai/deepseek-coder-v2": 64000,
-  // Qwen
-  "qwen/qwen3-235b-a22b": 128000,
-  "qwen/qwen3-coder-480b-a35b-instruct": 128000,
-  "qwen/qwen2-5-72b-instruct": 128000,
-  "qwen/qwen2-5-32b-instruct": 128000,
-  "qwen/qwq-32b": 128000,
-  // Mistral
-  "mistral/mistral-large": 32768,
-  "mistral/mistral-medium": 32768,
-  "mistral/mistral-small": 32768,
-  "mistral/codestral": 32768,
-  // Cohere
-  "cohere/command-r-plus": 128000,
-  "cohere/command-r": 128000,
-  // Other
-  "microsoft/phi-4": 16000,
-  "nvidia/llama-3-1-nemotron-70b-instruct": 131072,
-};
-
-// Known max output tokens
-const MAX_TOKENS: Record<string, number> = {
-  "anthropic/claude-3-7-sonnet-20250219": 8192,
-  "anthropic/claude-3-5-sonnet-20241022": 8192,
-  "anthropic/claude-3-opus-20240229": 4096,
-  "openai/gpt-4o": 16384,
-  "openai/gpt-4o-mini": 16384,
-  "deepseek-ai/deepseek-r1": 8192,
-  "deepseek-ai/deepseek-r1-0528": 8192,
-  "deepseek-ai/deepseek-v3": 8192,
-  "deepseek-ai/deepseek-v3-0324": 8192,
-  "deepseek-ai/deepseek-v3-250324": 8192,
-  "google/gemini-2-5-pro-preview-03-25": 8192,
-  "google/gemini-2-5-flash-preview": 8192,
-  "meta/llama-4-maverick": 131072,
-  "meta/llama-4-scout": 8192,
-};
-
-// =============================================================================
-// Curated "featured" models - listed first in the model selector
-// =============================================================================
-const FEATURED_MODELS = [
-  // Frontier / Flagship
-  "anthropic/claude-3-7-sonnet-20250219",
-  "anthropic/claude-3-5-sonnet-20241022",
-  "openai/gpt-4o",
-  "openai/gpt-4o-mini",
-  "deepseek-ai/deepseek-r1",
-  "deepseek-ai/deepseek-r1-0528",
-  "deepseek-ai/deepseek-v3",
-  "deepseek-ai/deepseek-v3-0324",
-  // Reasoning
-  "qwen/qwen3-235b-a22b",
-  "qwen/qwen3-coder-480b-a35b-instruct",
-  "qwen/qwq-32b",
-  // Google
-  "google/gemini-2-5-pro-preview-03-25",
-  "google/gemini-2-5-flash-preview",
-  "google/gemini-2-0-flash-thinking-exp-01-21",
-  // Meta
-  "meta/llama-4-maverick",
-  "meta/llama-4-scout",
-  "meta/llama-3-3-70b-instruct",
-  "meta/llama-3-1-405b-instruct",
-];
-
-// =============================================================================
-// Model building helpers
+// Model entry type
 // =============================================================================
 
 interface ChutesModelEntry {
@@ -190,11 +52,18 @@ interface ChutesModelEntry {
   compat?: Record<string, unknown>;
 }
 
+// =============================================================================
+// Helper to build display name from model ID
+// =============================================================================
+
 function makeDisplayName(modelId: string): string {
-  const parts = modelId.split("/");
+  // Strip -TEE suffix for cleaner display
+  const cleanId = modelId.replace(/-TEE$/, "");
+
+  const parts = cleanId.split("/");
   const provider = parts[0];
   const name = parts[parts.length - 1];
-  
+
   // Provider display names
   const providerDisplay: Record<string, string> = {
     "anthropic": "Anthropic",
@@ -207,54 +76,421 @@ function makeDisplayName(modelId: string): string {
     "qwen": "Qwen",
     "microsoft": "Microsoft",
     "nvidia": "NVIDIA",
+    "moonshotai": "Moonshot AI",
+    "minimaxai": "MiniMax",
+    "zai-org": "Zhipu AI",
+    "tngtech": "TNG",
+    "nousresearch": "NousResearch",
+    "xiaomimimo": "Xiaomi MiMo",
+    "unsloth": "Unsloth",
+    "rednote-hilab": "Rednote",
   };
-  
+
   const pDisplay = providerDisplay[provider] ?? provider;
   const nDisplay = name
     .replace(/-/g, " ")
     .replace(/_/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());
-    
+
   return `${pDisplay} ${nDisplay}`;
 }
 
-function buildModelEntry(modelId: string): ChutesModelEntry | null {
-  if (SKIP_MODELS.has(modelId)) return null;
+// =============================================================================
+// Known models with full metadata (sourced from Chutes AI API)
+// =============================================================================
 
-  const isReasoning = REASONING_MODELS.has(modelId);
-  const isVision = VISION_MODELS.has(modelId);
-  const contextWindow = CONTEXT_WINDOWS[modelId] ?? 4096;
-  const maxTokens = MAX_TOKENS[modelId] ?? Math.min(4096, contextWindow);
+const KNOWN_MODELS: ChutesModelEntry[] = [
+  // ── DeepSeek ──────────────────────────────────────────────────────────────
+  {
+    id: "deepseek-ai/DeepSeek-V3.2-TEE",
+    name: "DeepSeek V3.2",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 131072,
+    maxTokens: 65536,
+    cost: { input: 0.28, output: 0.42, cacheRead: 0.14, cacheWrite: 0.28 },
+  },
+  {
+    id: "deepseek-ai/DeepSeek-V3.1-TEE",
+    name: "DeepSeek V3.1",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 163840,
+    maxTokens: 65536,
+    cost: { input: 0.27, output: 1.00, cacheRead: 0.135, cacheWrite: 0.27 },
+  },
+  {
+    id: "deepseek-ai/DeepSeek-V3-0324-TEE",
+    name: "DeepSeek V3 0324",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 163840,
+    maxTokens: 65536,
+    cost: { input: 0.25, output: 1.00, cacheRead: 0.125, cacheWrite: 0.25 },
+  },
+  {
+    id: "deepseek-ai/DeepSeek-R1-0528-TEE",
+    name: "DeepSeek R1 0528",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 163840,
+    maxTokens: 65536,
+    cost: { input: 0.45, output: 2.15, cacheRead: 0.225, cacheWrite: 0.45 },
+  },
+  {
+    id: "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+    name: "DeepSeek R1 Distill Llama 70B",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 131072,
+    maxTokens: 131072,
+    cost: { input: 0.0272, output: 0.1087, cacheRead: 0.0136, cacheWrite: 0.0272 },
+  },
+  {
+    id: "tngtech/DeepSeek-TNG-R1T2-Chimera-TEE",
+    name: "TNG DeepSeek R1T2 Chimera",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 163840,
+    maxTokens: 163840,
+    cost: { input: 0.30, output: 1.10, cacheRead: 0.15, cacheWrite: 0.30 },
+  },
 
-  const entry: ChutesModelEntry = {
-    id: modelId,
-    name: makeDisplayName(modelId),
-    reasoning: isReasoning,
-    input: isVision ? ["text", "image"] : ["text"],
-    contextWindow,
-    maxTokens,
-    cost: {
-      input: 0,
-      output: 0,
-      cacheRead: 0,
-      cacheWrite: 0,
-    },
-  };
+  // ── Qwen ───────────────────────────────────────────────────────────────────
+  {
+    id: "Qwen/Qwen3.5-397B-A17B-TEE",
+    name: "Qwen 3.5 397B A17B",
+    reasoning: true,
+    input: ["text", "image"],
+    contextWindow: 262144,
+    maxTokens: 65536,
+    cost: { input: 0.39, output: 2.34, cacheRead: 0.195, cacheWrite: 0.39 },
+  },
+  {
+    id: "Qwen/Qwen3-235B-A22B-Thinking-2507",
+    name: "Qwen 3 235B A22B Thinking 2507",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 262144,
+    maxTokens: 262144,
+    cost: { input: 0.11, output: 0.60, cacheRead: 0.055, cacheWrite: 0.11 },
+  },
+  {
+    id: "Qwen/Qwen3-235B-A22B-Instruct-2507-TEE",
+    name: "Qwen 3 235B A22B Instruct 2507",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 262144,
+    maxTokens: 65536,
+    cost: { input: 0.10, output: 0.60, cacheRead: 0.05, cacheWrite: 0.10 },
+  },
+  {
+    id: "Qwen/Qwen3-Coder-Next-TEE",
+    name: "Qwen 3 Coder Next",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 262144,
+    maxTokens: 65536,
+    cost: { input: 0.12, output: 0.75, cacheRead: 0.06, cacheWrite: 0.12 },
+  },
+  {
+    id: "Qwen/Qwen3-Next-80B-A3B-Instruct",
+    name: "Qwen 3 Next 80B A3B Instruct",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 262144,
+    maxTokens: 262144,
+    cost: { input: 0.10, output: 0.80, cacheRead: 0.05, cacheWrite: 0.10 },
+  },
+  {
+    id: "Qwen/Qwen3-32B-TEE",
+    name: "Qwen 3 32B",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 40960,
+    maxTokens: 40960,
+    cost: { input: 0.08, output: 0.24, cacheRead: 0.04, cacheWrite: 0.08 },
+  },
+  {
+    id: "Qwen/Qwen3-30B-A3B",
+    name: "Qwen 3 30B A3B",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 40960,
+    maxTokens: 40960,
+    cost: { input: 0.06, output: 0.22, cacheRead: 0.03, cacheWrite: 0.06 },
+  },
+  {
+    id: "Qwen/Qwen2.5-72B-Instruct",
+    name: "Qwen 2.5 72B Instruct",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 32768,
+    maxTokens: 32768,
+    cost: { input: 0.2989, output: 1.1957, cacheRead: 0.14945, cacheWrite: 0.2989 },
+  },
+  {
+    id: "Qwen/Qwen2.5-Coder-32B-Instruct",
+    name: "Qwen 2.5 Coder 32B Instruct",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 32768,
+    maxTokens: 32768,
+    cost: { input: 0.0272, output: 0.1087, cacheRead: 0.0136, cacheWrite: 0.0272 },
+  },
+  {
+    id: "Qwen/Qwen2.5-VL-32B-Instruct",
+    name: "Qwen 2.5 VL 32B Instruct",
+    reasoning: false,
+    input: ["text", "image"],
+    contextWindow: 16384,
+    maxTokens: 16384,
+    cost: { input: 0.0543, output: 0.2174, cacheRead: 0.02715, cacheWrite: 0.0543 },
+  },
+  {
+    id: "Qwen/Qwen3Guard-Gen-0.6B",
+    name: "Qwen 3 Guard Gen 0.6B",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 32768,
+    maxTokens: 32768,
+    cost: { input: 0.01, output: 0.0109, cacheRead: 0.005, cacheWrite: 0.01 },
+  },
 
-  // Default compat for CHUTES models
-  // CHUTES uses standard OpenAI API, so we use default compat
+  // ── Moonshot AI ────────────────────────────────────────────────────────────
+  {
+    id: "moonshotai/Kimi-K2.5-TEE",
+    name: "Moonshot AI Kimi K2.5",
+    reasoning: true,
+    input: ["text", "image"],
+    contextWindow: 262144,
+    maxTokens: 65535,
+    cost: { input: 0.3827, output: 1.72, cacheRead: 0.19135, cacheWrite: 0.3827 },
+  },
+
+  // ── OpenAI ─────────────────────────────────────────────────────────────────
+  {
+    id: "openai/gpt-oss-120b-TEE",
+    name: "OpenAI GPT OSS 120B",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 131072,
+    maxTokens: 65536,
+    cost: { input: 0.09, output: 0.36, cacheRead: 0.045, cacheWrite: 0.09 },
+  },
+
+  // ── Zhipu AI (GLM) ─────────────────────────────────────────────────────────
+  {
+    id: "zai-org/GLM-5.1-TEE",
+    name: "Zhipu AI GLM 5.1",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 202752,
+    maxTokens: 65535,
+    cost: { input: 0.95, output: 3.15, cacheRead: 0.475, cacheWrite: 0.95 },
+  },
+  {
+    id: "zai-org/GLM-5-TEE",
+    name: "Zhipu AI GLM 5",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 202752,
+    maxTokens: 65535,
+    cost: { input: 0.95, output: 3.15, cacheRead: 0.475, cacheWrite: 0.95 },
+  },
+  {
+    id: "zai-org/GLM-5-Turbo",
+    name: "Zhipu AI GLM 5 Turbo",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 202752,
+    maxTokens: 65535,
+    cost: { input: 0.4891, output: 1.9565, cacheRead: 0.24455, cacheWrite: 0.4891 },
+  },
+  {
+    id: "zai-org/GLM-4.7-TEE",
+    name: "Zhipu AI GLM 4.7",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 202752,
+    maxTokens: 65535,
+    cost: { input: 0.39, output: 1.75, cacheRead: 0.195, cacheWrite: 0.39 },
+  },
+  {
+    id: "zai-org/GLM-4.7-FP8",
+    name: "Zhipu AI GLM 4.7 FP8",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 202752,
+    maxTokens: 65535,
+    cost: { input: 0.2989, output: 1.1957, cacheRead: 0.14945, cacheWrite: 0.2989 },
+  },
+  {
+    id: "zai-org/GLM-4.6V",
+    name: "Zhipu AI GLM 4.6V",
+    reasoning: true,
+    input: ["text", "image"],
+    contextWindow: 131072,
+    maxTokens: 65536,
+    cost: { input: 0.30, output: 0.90, cacheRead: 0.15, cacheWrite: 0.30 },
+  },
+
+  // ── MiniMax ────────────────────────────────────────────────────────────────
+  {
+    id: "MiniMaxAI/MiniMax-M2.5-TEE",
+    name: "MiniMax M2.5",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 196608,
+    maxTokens: 65536,
+    cost: { input: 0.118, output: 0.99, cacheRead: 0.059, cacheWrite: 0.118 },
+  },
+
+  // ── Xiaomi MiMo ────────────────────────────────────────────────────────────
+  {
+    id: "XiaomiMiMo/MiMo-V2-Flash-TEE",
+    name: "Xiaomi MiMo V2 Flash",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 262144,
+    maxTokens: 65536,
+    cost: { input: 0.09, output: 0.29, cacheRead: 0.045, cacheWrite: 0.09 },
+  },
+
+  // ── NousResearch ───────────────────────────────────────────────────────────
+  {
+    id: "NousResearch/DeepHermes-3-Mistral-24B-Preview",
+    name: "NousResearch DeepHermes 3 Mistral 24B",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 32768,
+    maxTokens: 32768,
+    cost: { input: 0.0245, output: 0.0978, cacheRead: 0.01225, cacheWrite: 0.0245 },
+  },
+  {
+    id: "NousResearch/Hermes-4-14B",
+    name: "NousResearch Hermes 4 14B",
+    reasoning: true,
+    input: ["text"],
+    contextWindow: 40960,
+    maxTokens: 40960,
+    cost: { input: 0.0136, output: 0.0543, cacheRead: 0.0068, cacheWrite: 0.0136 },
+  },
+
+  // ── Google Gemma (via Unsloth) ──────────────────────────────────────────────
+  {
+    id: "unsloth/gemma-3-27b-it",
+    name: "Unsloth Gemma 3 27B IT",
+    reasoning: false,
+    input: ["text", "image"],
+    contextWindow: 128000,
+    maxTokens: 65536,
+    cost: { input: 0.0272, output: 0.1087, cacheRead: 0.0136, cacheWrite: 0.0272 },
+  },
+  {
+    id: "unsloth/gemma-3-12b-it",
+    name: "Unsloth Gemma 3 12B IT",
+    reasoning: false,
+    input: ["text", "image"],
+    contextWindow: 131072,
+    maxTokens: 131072,
+    cost: { input: 0.03, output: 0.10, cacheRead: 0.015, cacheWrite: 0.03 },
+  },
+  {
+    id: "unsloth/gemma-3-4b-it",
+    name: "Unsloth Gemma 3 4B IT",
+    reasoning: false,
+    input: ["text", "image"],
+    contextWindow: 96000,
+    maxTokens: 96000,
+    cost: { input: 0.01, output: 0.0272, cacheRead: 0.005, cacheWrite: 0.01 },
+  },
+
+  // ── Mistral (via Unsloth) ─────────────────────────────────────────────────
+  {
+    id: "unsloth/Mistral-Nemo-Instruct-2407",
+    name: "Unsloth Mistral Nemo Instruct 2407",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 131072,
+    maxTokens: 131072,
+    cost: { input: 0.02, output: 0.04, cacheRead: 0.01, cacheWrite: 0.02 },
+  },
+
+  // ── Llama (via Unsloth) ────────────────────────────────────────────────────
+  {
+    id: "unsloth/Llama-3.2-3B-Instruct",
+    name: "Unsloth Llama 3.2 3B Instruct",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 16384,
+    maxTokens: 16384,
+    cost: { input: 0.01, output: 0.0136, cacheRead: 0.005, cacheWrite: 0.01 },
+  },
+  {
+    id: "unsloth/Llama-3.2-1B-Instruct",
+    name: "Unsloth Llama 3.2 1B Instruct",
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 16384,
+    maxTokens: 16384,
+    cost: { input: 0.01, output: 0.0109, cacheRead: 0.005, cacheWrite: 0.01 },
+  },
+
+  // ── Rednote ────────────────────────────────────────────────────────────────
+  {
+    id: "rednote-hilab/dots.ocr",
+    name: "Rednote Dots OCR",
+    reasoning: false,
+    input: ["text", "image"],
+    contextWindow: 131072,
+    maxTokens: 131072,
+    cost: { input: 0.01, output: 0.0109, cacheRead: 0.005, cacheWrite: 0.01 },
+  },
+];
+
+// =============================================================================
+// Curated "featured" models - listed first in the model selector
+// =============================================================================
+const FEATURED_MODEL_IDS = [
+  // Frontier / Flagship
+  "moonshotai/Kimi-K2.5-TEE",
+  "deepseek-ai/DeepSeek-R1-0528-TEE",
+  "deepseek-ai/DeepSeek-V3.2-TEE",
+  "Qwen/Qwen3.5-397B-A17B-TEE",
+  "Qwen/Qwen3-235B-A22B-Thinking-2507",
+  "zai-org/GLM-5.1-TEE",
+  "deepseek-ai/DeepSeek-V3.1-TEE",
+  "tngtech/DeepSeek-TNG-R1T2-Chimera-TEE",
+  // Strong general-purpose
+  "MiniMaxAI/MiniMax-M2.5-TEE",
+  "openai/gpt-oss-120b-TEE",
+  "Qwen/Qwen3-Coder-Next-TEE",
+  "XiaomiMiMo/MiMo-V2-Flash-TEE",
+  // Cost-effective
+  "Qwen/Qwen3-32B-TEE",
+  "Qwen/Qwen3-30B-A3B",
+  "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+  // Vision models
+  "zai-org/GLM-4.6V",
+  "Qwen/Qwen2.5-VL-32B-Instruct",
+  "unsloth/gemma-3-27b-it",
+];
+
+// =============================================================================
+// Dynamic model discovery helpers
+// =============================================================================
+
+// Build a lookup from known model IDs to their full entries
+const knownModelMap = new Map<string, ChutesModelEntry>();
+for (const entry of KNOWN_MODELS) {
   entry.compat = {
-    supportsReasoningEffort: isReasoning,
+    supportsReasoningEffort: entry.reasoning,
     supportsDeveloperRole: true,
     maxTokensField: "max_tokens",
   };
-
-  return entry;
+  knownModelMap.set(entry.id, entry);
 }
-
-// =============================================================================
-// Dynamic model discovery
-// =============================================================================
 
 interface ChutesApiModel {
   id: string;
@@ -283,6 +519,35 @@ async function fetchChutesModels(apiKey: string): Promise<string[]> {
     console.warn("CHUTES AI: Failed to fetch models:", error);
     return [];
   }
+}
+
+/**
+ * Build a minimal model entry for a dynamically discovered model
+ * that isn't in our KNOWN_MODELS list. We use conservative defaults.
+ */
+function buildFallbackEntry(modelId: string): ChutesModelEntry {
+  const entry: ChutesModelEntry = {
+    id: modelId,
+    name: makeDisplayName(modelId),
+    reasoning: false,
+    input: ["text"],
+    contextWindow: 40960,
+    maxTokens: 4096,
+    cost: {
+      input: 0,
+      output: 0,
+      cacheRead: 0,
+      cacheWrite: 0,
+    },
+  };
+
+  entry.compat = {
+    supportsReasoningEffort: false,
+    supportsDeveloperRole: true,
+    maxTokensField: "max_tokens",
+  };
+
+  return entry;
 }
 
 // =============================================================================
@@ -329,13 +594,20 @@ function chutesStreamSimple(
 // =============================================================================
 
 export default function (pi: ExtensionAPI) {
-  // Build the curated model list
+  // Build the curated model list: featured models first, then remaining known models
   const modelMap = new Map<string, ChutesModelEntry>();
 
   // Add featured models first (preserves order in selector)
-  for (const id of FEATURED_MODELS) {
-    const entry = buildModelEntry(id);
+  for (const id of FEATURED_MODEL_IDS) {
+    const entry = knownModelMap.get(id);
     if (entry) modelMap.set(id, entry);
+  }
+
+  // Add remaining known models
+  for (const entry of KNOWN_MODELS) {
+    if (!modelMap.has(entry.id)) {
+      modelMap.set(entry.id, entry);
+    }
   }
 
   // Register with curated models immediately
@@ -362,11 +634,15 @@ export default function (pi: ExtensionAPI) {
     for (const id of liveModelIds) {
       if (modelMap.has(id)) continue; // Already known
 
-      const entry = buildModelEntry(id);
-      if (entry) {
-        modelMap.set(id, entry);
-        newModelsAdded++;
+      // Check if we have full metadata for this model
+      const known = knownModelMap.get(id);
+      if (known) {
+        modelMap.set(id, known);
+      } else {
+        // Build a fallback entry with conservative defaults
+        modelMap.set(id, buildFallbackEntry(id));
       }
+      newModelsAdded++;
     }
 
     // Re-register with full model list if we found new ones
