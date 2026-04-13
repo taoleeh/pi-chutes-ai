@@ -1,0 +1,34 @@
+{
+  "name": "pi-chutes-ai",
+  "version": "1.0.0",
+  "description": "CHUTES AI API provider extension for pi coding agent — access models via chutes.ai",
+  "type": "module",
+  "files": [
+    "index.ts",
+    "README.md"
+  ],
+  "keywords": [
+    "pi-package"
+  ],
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "scripts": {
+    "clean": "echo 'nothing to clean'",
+    "build": "echo 'nothing to build'",
+    "check": "echo 'nothing to check'"
+  },
+  "devDependencies": {
+    "@mariozechner/pi-coding-agent": "^0.52.9",
+    "@mariozechner/pi-ai": "^0.52.9",
+    "@types/node": "^22.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taoleeh/pi-chutes-ai"
+  },
+  "homepage": "https://chutes.ai",
+  "license": "MIT"
+}
