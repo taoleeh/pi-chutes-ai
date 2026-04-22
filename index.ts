@@ -66,23 +66,23 @@ function makeDisplayName(modelId: string): string {
 
   // Provider display names
   const providerDisplay: Record<string, string> = {
-    "anthropic": "Anthropic",
-    "openai": "OpenAI",
-    "google": "Google",
-    "meta": "Meta",
-    "mistral": "Mistral",
-    "cohere": "Cohere",
+    anthropic: "Anthropic",
+    openai: "OpenAI",
+    google: "Google",
+    meta: "Meta",
+    mistral: "Mistral",
+    cohere: "Cohere",
     "deepseek-ai": "DeepSeek",
-    "qwen": "Qwen",
-    "microsoft": "Microsoft",
-    "nvidia": "NVIDIA",
-    "moonshotai": "Moonshot AI",
-    "minimaxai": "MiniMax",
+    qwen: "Qwen",
+    microsoft: "Microsoft",
+    nvidia: "NVIDIA",
+    moonshotai: "Moonshot AI",
+    minimaxai: "MiniMax",
     "zai-org": "Zhipu AI",
-    "tngtech": "TNG",
-    "nousresearch": "NousResearch",
-    "xiaomimimo": "Xiaomi MiMo",
-    "unsloth": "Unsloth",
+    tngtech: "TNG",
+    nousresearch: "NousResearch",
+    xiaomimimo: "Xiaomi MiMo",
+    unsloth: "Unsloth",
     "rednote-hilab": "Rednote",
   };
 
@@ -117,7 +117,7 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 163840,
     maxTokens: 65536,
-    cost: { input: 0.27, output: 1.00, cacheRead: 0.135, cacheWrite: 0.27 },
+    cost: { input: 0.27, output: 1.0, cacheRead: 0.135, cacheWrite: 0.27 },
   },
   {
     id: "deepseek-ai/DeepSeek-V3-0324-TEE",
@@ -126,7 +126,7 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 163840,
     maxTokens: 65536,
-    cost: { input: 0.25, output: 1.00, cacheRead: 0.125, cacheWrite: 0.25 },
+    cost: { input: 0.25, output: 1.0, cacheRead: 0.125, cacheWrite: 0.25 },
   },
   {
     id: "deepseek-ai/DeepSeek-R1-0528-TEE",
@@ -144,7 +144,12 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 131072,
     maxTokens: 131072,
-    cost: { input: 0.0272, output: 0.1087, cacheRead: 0.0136, cacheWrite: 0.0272 },
+    cost: {
+      input: 0.0272,
+      output: 0.1087,
+      cacheRead: 0.0136,
+      cacheWrite: 0.0272,
+    },
   },
   {
     id: "tngtech/DeepSeek-TNG-R1T2-Chimera-TEE",
@@ -153,7 +158,7 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 163840,
     maxTokens: 163840,
-    cost: { input: 0.30, output: 1.10, cacheRead: 0.15, cacheWrite: 0.30 },
+    cost: { input: 0.3, output: 1.1, cacheRead: 0.15, cacheWrite: 0.3 },
   },
 
   // ── Qwen ───────────────────────────────────────────────────────────────────
@@ -173,7 +178,7 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 262144,
     maxTokens: 262144,
-    cost: { input: 0.11, output: 0.60, cacheRead: 0.055, cacheWrite: 0.11 },
+    cost: { input: 0.11, output: 0.6, cacheRead: 0.055, cacheWrite: 0.11 },
   },
   {
     id: "Qwen/Qwen3-235B-A22B-Instruct-2507-TEE",
@@ -182,7 +187,7 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 262144,
     maxTokens: 65536,
-    cost: { input: 0.10, output: 0.60, cacheRead: 0.05, cacheWrite: 0.10 },
+    cost: { input: 0.1, output: 0.6, cacheRead: 0.05, cacheWrite: 0.1 },
   },
   {
     id: "Qwen/Qwen3-Coder-Next-TEE",
@@ -200,7 +205,7 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 262144,
     maxTokens: 262144,
-    cost: { input: 0.10, output: 0.80, cacheRead: 0.05, cacheWrite: 0.10 },
+    cost: { input: 0.1, output: 0.8, cacheRead: 0.05, cacheWrite: 0.1 },
   },
   {
     id: "Qwen/Qwen3-32B-TEE",
@@ -227,7 +232,12 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 32768,
     maxTokens: 32768,
-    cost: { input: 0.2989, output: 1.1957, cacheRead: 0.14945, cacheWrite: 0.2989 },
+    cost: {
+      input: 0.2989,
+      output: 1.1957,
+      cacheRead: 0.14945,
+      cacheWrite: 0.2989,
+    },
   },
   {
     id: "Qwen/Qwen2.5-Coder-32B-Instruct",
@@ -236,7 +246,12 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 32768,
     maxTokens: 32768,
-    cost: { input: 0.0272, output: 0.1087, cacheRead: 0.0136, cacheWrite: 0.0272 },
+    cost: {
+      input: 0.0272,
+      output: 0.1087,
+      cacheRead: 0.0136,
+      cacheWrite: 0.0272,
+    },
   },
   {
     id: "Qwen/Qwen2.5-VL-32B-Instruct",
@@ -245,7 +260,12 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text", "image"],
     contextWindow: 16384,
     maxTokens: 16384,
-    cost: { input: 0.0543, output: 0.2174, cacheRead: 0.02715, cacheWrite: 0.0543 },
+    cost: {
+      input: 0.0543,
+      output: 0.2174,
+      cacheRead: 0.02715,
+      cacheWrite: 0.0543,
+    },
   },
   {
     id: "Qwen/Qwen3Guard-Gen-0.6B",
@@ -265,7 +285,21 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text", "image"],
     contextWindow: 262144,
     maxTokens: 65535,
-    cost: { input: 0.3827, output: 1.72, cacheRead: 0.19135, cacheWrite: 0.3827 },
+    cost: {
+      input: 0.3827,
+      output: 1.72,
+      cacheRead: 0.19135,
+      cacheWrite: 0.3827,
+    },
+  },
+  {
+    id: "moonshotai/Kimi-K2.6-TEE",
+    name: "Moonshot AI Kimi K2.6",
+    reasoning: true,
+    input: ["text", "image"],
+    contextWindow: 262144,
+    maxTokens: 65535,
+    cost: { input: 0.95, output: 4.0, cacheRead: 0.475, cacheWrite: 0.95 },
   },
 
   // ── OpenAI ─────────────────────────────────────────────────────────────────
@@ -305,7 +339,12 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 202752,
     maxTokens: 65535,
-    cost: { input: 0.4891, output: 1.9565, cacheRead: 0.24455, cacheWrite: 0.4891 },
+    cost: {
+      input: 0.4891,
+      output: 1.9565,
+      cacheRead: 0.24455,
+      cacheWrite: 0.4891,
+    },
   },
   {
     id: "zai-org/GLM-4.7-TEE",
@@ -323,7 +362,12 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 202752,
     maxTokens: 65535,
-    cost: { input: 0.2989, output: 1.1957, cacheRead: 0.14945, cacheWrite: 0.2989 },
+    cost: {
+      input: 0.2989,
+      output: 1.1957,
+      cacheRead: 0.14945,
+      cacheWrite: 0.2989,
+    },
   },
   {
     id: "zai-org/GLM-4.6V",
@@ -332,7 +376,7 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text", "image"],
     contextWindow: 131072,
     maxTokens: 65536,
-    cost: { input: 0.30, output: 0.90, cacheRead: 0.15, cacheWrite: 0.30 },
+    cost: { input: 0.3, output: 0.9, cacheRead: 0.15, cacheWrite: 0.3 },
   },
 
   // ── MiniMax ────────────────────────────────────────────────────────────────
@@ -365,7 +409,12 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 32768,
     maxTokens: 32768,
-    cost: { input: 0.0245, output: 0.0978, cacheRead: 0.01225, cacheWrite: 0.0245 },
+    cost: {
+      input: 0.0245,
+      output: 0.0978,
+      cacheRead: 0.01225,
+      cacheWrite: 0.0245,
+    },
   },
   {
     id: "NousResearch/Hermes-4-14B",
@@ -374,7 +423,12 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text"],
     contextWindow: 40960,
     maxTokens: 40960,
-    cost: { input: 0.0136, output: 0.0543, cacheRead: 0.0068, cacheWrite: 0.0136 },
+    cost: {
+      input: 0.0136,
+      output: 0.0543,
+      cacheRead: 0.0068,
+      cacheWrite: 0.0136,
+    },
   },
 
   // ── Google Gemma (via Unsloth) ──────────────────────────────────────────────
@@ -385,7 +439,12 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text", "image"],
     contextWindow: 128000,
     maxTokens: 65536,
-    cost: { input: 0.0272, output: 0.1087, cacheRead: 0.0136, cacheWrite: 0.0272 },
+    cost: {
+      input: 0.0272,
+      output: 0.1087,
+      cacheRead: 0.0136,
+      cacheWrite: 0.0272,
+    },
   },
   {
     id: "unsloth/gemma-3-12b-it",
@@ -394,7 +453,7 @@ const KNOWN_MODELS: ChutesModelEntry[] = [
     input: ["text", "image"],
     contextWindow: 131072,
     maxTokens: 131072,
-    cost: { input: 0.03, output: 0.10, cacheRead: 0.015, cacheWrite: 0.03 },
+    cost: { input: 0.03, output: 0.1, cacheRead: 0.015, cacheWrite: 0.03 },
   },
   {
     id: "unsloth/gemma-3-4b-it",
@@ -509,7 +568,9 @@ async function fetchChutesModels(apiKey: string): Promise<string[]> {
     });
 
     if (!response.ok) {
-      console.warn(`CHUTES AI: Failed to fetch models: ${response.status} ${response.statusText}`);
+      console.warn(
+        `CHUTES AI: Failed to fetch models: ${response.status} ${response.statusText}`,
+      );
       return [];
     }
 
@@ -572,8 +633,8 @@ function chutesStreamSimple(
   if (!chutesApiKey) {
     throw new Error(
       `CHUTES AI: ${CHUTES_API_KEY_ENV} environment variable is not set. ` +
-      `Get an API key at https://chutes.ai and export it: ` +
-      `export ${CHUTES_API_KEY_ENV}=your-api-key`
+        `Get an API key at https://chutes.ai and export it: ` +
+        `export ${CHUTES_API_KEY_ENV}=your-api-key`,
     );
   }
 
@@ -585,7 +646,7 @@ function chutesStreamSimple(
   return streamSimpleOpenAICompletions(
     model as Model<"openai-completions">,
     context,
-    modifiedOptions
+    modifiedOptions,
   );
 }
 
